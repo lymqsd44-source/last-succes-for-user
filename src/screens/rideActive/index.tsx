@@ -689,9 +689,7 @@ const selectedVehicle = vehicleTypedata?.find((v:any) =>
                     <Call color={appColors.whiteColor} />
                   </TouchableOpacity>
                 </View>
-                {taxidoSettingData?.taxido_values?.ads?.native_enable == 1 && (
-  //                <NativeAdComponent heights={windowHeight(150)} adsHeight={windowHeight(60)} />
-                )}                <View style={styles.cancelBtnView}>
+                               <View style={styles.cancelBtnView}>
                   <Button
                     title={translateData.cancelRide}
                     backgroundColor={isDark ? appColors.darkHeader : appColors.primaryGray}
