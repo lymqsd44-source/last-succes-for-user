@@ -1,5 +1,5 @@
 diff --git a/android/build.gradle b/android/build.gradle
-index a4a57b5..1ee2edb 100644
+index .. 100644
 --- a/android/build.gradle
 +++ b/android/build.gradle
 @@ -84,7 +84,6 @@ dependencies {
@@ -9,4 +9,3 @@ index a4a57b5..1ee2edb 100644
 -        implementation project(':ReactAndroid')
      }
  }
- 
