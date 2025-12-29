@@ -3,7 +3,7 @@ name: Build QaramurtTaxi APK
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:  # Allows manual trigger from GitHub UI
+  workflow_dispatch:  # Manual trigger option
 
 jobs:
   build:
@@ -22,39 +22,41 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'  # Speeds up installs
+          cache: 'npm'
 
-      - name: Install NPM dependencies
+      - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Clean Gradle build (avoid cache issues)
+      - name: Make gradlew executable
+        run: chmod +x ./android/gradlew
+
+      - name: Clean Gradle build
         run: |
           cd android
           ./gradlew clean
           cd ..
 
-      - name: Install NDK (Side by side) 27.1.12297006
+      - name: Install NDK
         run: |
-          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null
           $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;27.1.12297006"
 
       - name: Decode Keystore
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/qaramurt-keystore.jks
 
-      - name: Build Signed Release APK
+      - name: Build Signed APK
         run: |
           cd android
-          chmod +x gradlew
           ./gradlew assembleRelease --no-daemon --warning-mode all
         env:
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
 
-      - name: Upload APK Artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: QaramurtTaxi-APK
           path: android/app/build/outputs/apk/release/app-release.apk
-          retention-days: 30  # Keeps artifact for 30 days
+          retention-days: 30
           if-no-files-found: error
