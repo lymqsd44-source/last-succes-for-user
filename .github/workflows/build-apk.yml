@@ -36,10 +36,12 @@ jobs:
           ./gradlew clean
           cd ..
 
-      - name: Accept SDK Licenses and Install Preferred NDK
+      - name: Accept SDK Licenses
         run: |
           echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null
-          # Install the exact NDK version RN 0.77 prefers to avoid "NDK not configured" error
+
+      - name: Install NDK
+        run: |
           $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;27.0.12077973"
 
       - name: Decode Keystore from Secret
