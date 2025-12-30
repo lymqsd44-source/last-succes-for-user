@@ -39,8 +39,7 @@ android {
         }
 
         release {
-            // Keystore is committed in android/app/
-            // Path from android/ directory (where Gradle runs)
+            // Correct path from android/ directory
             storeFile file("app/qaramurt-keystore.jks")
             storePassword "qaramurt@toychpro.kz"
             keyAlias "qaramurt"
@@ -63,15 +62,15 @@ android {
 dependencies {
     implementation("com.facebook.react:react-android")
 
-    // Firebase - latest stable BOM
+    // Firebase
     implementation platform('com.google.firebase:firebase-bom:33.1.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth'
 
-    // Google Play Services Auth
+    // Google Play Services
     implementation 'com.google.android.gms:play-services-auth:21.2.0'
 
-    // Use JSC (Hermes disabled in gradle.properties)
+    // JSC
     implementation jscFlavor
 
     // MultiDex
