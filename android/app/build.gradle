@@ -39,13 +39,14 @@ android {
         }
 
         release {
-            // Keystore is decoded to: project_root/android/app/qaramurt-keystore.jks
-            // Gradle executes from: project_root/android/
-            // So the correct relative path is: app/qaramurt-keystore.jks
+            // Keystore file is committed in the repo
             storeFile file("app/qaramurt-keystore.jks")
-            storePassword System.getenv("STORE_PASSWORD")
-            keyAlias System.getenv("KEY_ALIAS")
-            keyPassword System.getenv("KEY_PASSWORD")
+            // Replace with your actual keystore password
+            storePassword "qaramurt@toychpro.kz"
+            // Alias from keytool output
+            keyAlias "qaramurt"
+            // Usually same as keystore password — replace if different
+            keyPassword "qaramurt@toychpro.kz"
         }
     }
 
@@ -72,7 +73,7 @@ dependencies {
     // Google Play Services Auth
     implementation 'com.google.android.gms:play-services-auth:21.2.0'
 
-    // Use JSC (Hermes disabled in gradle.properties)
+    // Use JSC (Hermes disabled)
     implementation jscFlavor
 
     // MultiDex
