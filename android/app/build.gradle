@@ -18,14 +18,14 @@ android {
 
     namespace "com.qaramurttaxi"
 
-    compileSdk 34
-    buildToolsVersion "34.0.0"
+    compileSdk 35
+    buildToolsVersion "35.0.0"
 
     defaultConfig {
         applicationId "com.qaramurttaxi"
 
         minSdk 23
-        targetSdk 34
+        targetSdk 34   // ✅ OK to keep 34
 
         versionCode 1
         versionName "2.0.0"
@@ -73,7 +73,7 @@ android {
     }
 
     /**
-     * Java & Kotlin (CRITICAL)
+     * Java & Kotlin
      */
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -102,7 +102,7 @@ dependencies {
 
     implementation("com.facebook.react:react-android")
 
-    // Firebase (BOM-controlled)
+    // Firebase (BOM)
     implementation platform("com.google.firebase:firebase-bom:33.1.2")
     implementation "com.google.firebase:firebase-analytics-ktx"
     implementation "com.google.firebase:firebase-auth"
