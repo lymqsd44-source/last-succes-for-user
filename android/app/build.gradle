@@ -115,9 +115,4 @@ dependencies {
 
     // Multidex
     implementation "androidx.multidex:multidex:2.0.1"
-
-    MYAPP_UPLOAD_STORE_FILE=aramurt-keystore.jks
-    MYAPP_UPLOAD_KEY_ALIAS=qaramurt
-    MYAPP_UPLOAD_STORE_PASSWORD=123456
-    MYAPP_UPLOAD_KEY_PASSWORD=123456
     }
