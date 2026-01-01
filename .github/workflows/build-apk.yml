@@ -53,7 +53,14 @@ jobs:
           sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
       # -----------------------------
-      # 5️⃣ Clean Gradle
+      # 5️⃣ Fix Gradle wrapper permission (CRITICAL)
+      # -----------------------------
+      - name: Make gradlew executable
+        run: |
+          chmod +x android/gradlew
+
+      # -----------------------------
+      # 6️⃣ Clean Gradle
       # -----------------------------
       - name: Clean Gradle
         run: |
@@ -63,7 +70,7 @@ jobs:
           rm -rf ~/.gradle/daemon
 
       # -----------------------------
-      # 6️⃣ Build Signed APK
+      # 7️⃣ Build Signed APK
       # -----------------------------
       - name: Build Release APK
         run: |
@@ -71,7 +78,7 @@ jobs:
           ./gradlew assembleRelease --no-daemon --stacktrace
 
       # -----------------------------
-      # 7️⃣ Upload APK artifact
+      # 8️⃣ Upload APK artifact
       # -----------------------------
       - name: Upload APK
         uses: actions/upload-artifact@v4
