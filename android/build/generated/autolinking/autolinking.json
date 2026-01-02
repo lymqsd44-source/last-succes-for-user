@@ -9,7 +9,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "E:\\last taxi\\Taxido_user\\node_modules\\@invertase\\react-native-apple-authentication\\RNAppleAuthentication.podspec",
-          "version": "2.4.1",
+          "version": "2.5.0",
           "configurations": [],
           "scriptPhases": []
         },
@@ -157,7 +157,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "E:\\last taxi\\Taxido_user\\node_modules\\@react-native-community\\push-notification-ios\\RNCPushNotificationIOS.podspec",
-          "version": "1.11.0",
+          "version": "1.12.0",
           "configurations": [],
           "scriptPhases": []
         },
@@ -469,7 +469,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "E:\\last taxi\\Taxido_user\\node_modules\\react-native-gesture-handler\\RNGestureHandler.podspec",
-          "version": "2.28.0",
+          "version": "2.30.0",
           "configurations": [],
           "scriptPhases": []
         },
@@ -570,7 +570,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "E:\\last taxi\\Taxido_user\\node_modules\\react-native-maps\\react-native-maps.podspec",
-          "version": "1.26.0",
+          "version": "1.26.20",
           "configurations": [],
           "scriptPhases": []
         },
@@ -650,7 +650,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "E:\\last taxi\\Taxido_user\\node_modules\\react-native-reanimated\\RNReanimated.podspec",
-          "version": "3.18.0",
+          "version": "3.19.5",
           "configurations": [],
           "scriptPhases": []
         },

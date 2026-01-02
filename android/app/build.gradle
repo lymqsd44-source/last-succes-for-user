@@ -15,7 +15,6 @@ def enableProguardInReleaseBuilds = false
 def jscFlavor = "org.webkit:android-jsc:+"
 
 android {
-
     namespace "com.qaramurttaxi"
 
     compileSdk 35
@@ -23,9 +22,8 @@ android {
 
     defaultConfig {
         applicationId "com.qaramurttaxi"
-
         minSdk 23
-        targetSdk 34   // ✅ OK to keep 34
+        targetSdk 34
 
         versionCode 1
         versionName "2.0.0"
@@ -34,10 +32,9 @@ android {
     }
 
     /**
-     * 🔐 Signing configs
+     * 🔐 Signing Configs – Safe & Simple
      */
     signingConfigs {
-
         debug {
             storeFile file("debug.keystore")
             storePassword "android"
@@ -46,35 +43,47 @@ android {
         }
 
         release {
-        
-            storeFile file(System.getenv("KEYSTORE_PATH"))
-            storePassword System.getenv("STORE_PASSWORD")
-            keyAlias System.getenv("KEY_ALIAS")
-            keyPassword System.getenv("KEY_PASSWORD")
+            // Use environment variables if available (for CI or manual signed builds)
+            // Fall back to debug signing if no keystore info is provided (prevents build crash)
+            if (System.getenv("MYAPP_UPLOAD_STORE_FILE") &&
+                System.getenv("MYAPP_UPLOAD_STORE_PASSWORD") &&
+                System.getenv("MYAPP_UPLOAD_KEY_ALIAS") &&
+                System.getenv("MYAPP_UPLOAD_KEY_PASSWORD")) {
+
+                storeFile file(System.getenv("MYAPP_UPLOAD_STORE_FILE"))
+                storePassword System.getenv("MYAPP_UPLOAD_STORE_PASSWORD")
+                keyAlias System.getenv("MYAPP_UPLOAD_KEY_ALIAS")
+                keyPassword System.getenv("MYAPP_UPLOAD_KEY_PASSWORD")
+            } else {
+                // Safe fallback – use debug keystore (build will succeed even without release keys)
+                storeFile file("debug.keystore")
+                storePassword "android"
+                keyAlias "androiddebugkey"
+                keyPassword "android"
+            }
         }
     }
 
     buildTypes {
-
         debug {
             signingConfig signingConfigs.debug
         }
 
         release {
-            signingConfig signingConfigs.release
-            minifyEnabled false
-            shrinkResources false
+            // Only use real release signing when keystore info is provided
+            if (System.getenv("MYAPP_UPLOAD_STORE_PASSWORD")) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
 
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            minifyEnabled enableProguardInReleaseBuilds
+            shrinkResources enableProguardInReleaseBuilds
+
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
 
-    /**
-     * Java & Kotlin
-     */
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -84,40 +93,36 @@ android {
         jvmTarget = "17"
     }
 
-    /**
-     * Prevent duplicate META-INF crashes
-     */
-    packagingOptions {
+    packaging {
         resources {
             excludes += [
                 "META-INF/LICENSE*",
                 "META-INF/NOTICE*",
-                "META-INF/*.kotlin_module"
+                "META-INF/AL2.0",
+                "META-INF/LGPL2.1",
+                "META-INF/*.kotlin_module",
+                "META-INF/DEPENDENCIES"
             ]
         }
     }
 }
 
 dependencies {
-
     implementation("com.facebook.react:react-android")
 
-    // Firebase (BOM)
-    implementation platform("com.google.firebase:firebase-bom:33.1.2")
+    // Firebase BoM – latest stable
+    implementation platform("com.google.firebase:firebase-bom:33.12.0")
     implementation "com.google.firebase:firebase-analytics-ktx"
-    implementation "com.google.firebase:firebase-auth"
+    implementation "com.google.firebase:firebase-auth-ktx"
+    implementation "com.google.firebase:firebase-messaging-ktx"
+    implementation "com.google.firebase:firebase-firestore-ktx"
 
     // Google Sign-In
-    implementation "com.google.android.gms:play-services-auth:21.2.0"
+    implementation "com.google.android.gms:play-services-auth:21.3.0"
 
-    // JavaScript engine
+    // JSC for better performance
     implementation jscFlavor
 
-    // Multidex
+    // MultiDex
     implementation "androidx.multidex:multidex:2.0.1"
-
-    MYAPP_UPLOAD_STORE_FILE=aramurt-keystore.jks
-    MYAPP_UPLOAD_KEY_ALIAS=qaramurt
-    MYAPP_UPLOAD_STORE_PASSWORD=123456
-    MYAPP_UPLOAD_KEY_PASSWORD=123456
-    }
+}
