@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 workflows:
   android-release:
     name: Build Signed Android APK
@@ -17,4 +18,25 @@ workflows:
           cd android
           ./gradlew assembleRelease
     artifacts:
+=======
+workflows:
+  android-release:
+    name: Build Signed Android APK
+    instance_type: mac_mini_m2  # Fast machine
+    max_build_duration: 120
+    environment:
+      vars:
+        PACKAGE_NAME: "com.qaramurttaxi"  # Your app ID
+      android_signing:
+        - keystore_reference: default  # We'll set this up next
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm ci
+      - name: Build signed release APK
+        script: |
+          cd android
+          ./gradlew assembleRelease
+    artifacts:
+>>>>>>> d17751b30159e17039f102bf6c7be4575e7a9854
       - android/app/build/outputs/**/*.apk  # Makes the signed APK downloadable
