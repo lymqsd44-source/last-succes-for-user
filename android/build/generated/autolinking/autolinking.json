@@ -469,7 +469,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "E:\\last taxi\\Taxido_user\\node_modules\\react-native-gesture-handler\\RNGestureHandler.podspec",
-          "version": "2.30.0",
+          "version": "2.22.1",
           "configurations": [],
           "scriptPhases": []
         },
@@ -650,7 +650,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "E:\\last taxi\\Taxido_user\\node_modules\\react-native-reanimated\\RNReanimated.podspec",
-          "version": "3.19.5",
+          "version": "2.17.0",
           "configurations": [],
           "scriptPhases": []
         },
@@ -659,7 +659,6 @@
           "packageImportPath": "import com.swmansion.reanimated.ReanimatedPackage;",
           "packageInstance": "new ReanimatedPackage()",
           "buildTypes": [],
-          "libraryName": "rnreanimated",
           "componentDescriptors": [],
           "cmakeListsPath": "E:/last taxi/Taxido_user/node_modules/react-native-reanimated/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
@@ -675,7 +674,7 @@
       "platforms": {
         "ios": {
           "podspecPath": "E:\\last taxi\\Taxido_user\\node_modules\\react-native-safe-area-context\\react-native-safe-area-context.podspec",
-          "version": "4.14.1",
+          "version": "5.6.2",
           "configurations": [],
           "scriptPhases": []
         },

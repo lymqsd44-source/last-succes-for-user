@@ -7,40 +7,37 @@ apply plugin: "com.google.gms.google-services"
  * React Native configuration
  */
 react {
-    newArchEnabled = false  // Keeping old architecture as per your current setup
+    // Keep old architecture to avoid Fabric/New Arch + NDK issues in older templates
+    newArchEnabled = false
+    
     autolinkLibrariesWithApp()
 }
 
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true  // RECOMMENDED: Enable for smaller APK + obfuscation
 def jscFlavor = "org.webkit:android-jsc:+"
 
 android {
+    // Critical: Forces use of stable NDK version (bypasses mismatches)
+    ndkVersion "26.1.10909125"
+
     namespace "com.qaramurttaxi"
     compileSdk 35
-    buildToolsVersion "35.0.0"
+    buildToolsVersion "35.0.0"  // Optional but safe to keep
 
     defaultConfig {
         applicationId "com.qaramurttaxi"
-<<<<<<< HEAD
-        minSdk 23
-        targetSdk 34
-
-=======
-        minSdk 24
-        targetSdk 34
->>>>>>> 42b9df0594b0e577ac541d55534f38c72d4482de
+        minSdkVersion 24          // Google Play requires at least 24 now
+        targetSdkVersion 35
         versionCode 1
         versionName "2.0.0"
         multiDexEnabled true
+
+        // Optional: Improve build performance
+        vectorDrawables {
+            useSupportLibrary true
+        }
     }
 
-    /**
-<<<<<<< HEAD
-     * 🔐 Signing Configs – Safe & Simple
-=======
-     * 🔐 Signing Configs – Improved & Secure
->>>>>>> 42b9df0594b0e577ac541d55534f38c72d4482de
-     */
     signingConfigs {
         debug {
             storeFile file("debug.keystore")
@@ -50,35 +47,17 @@ android {
         }
 
         release {
-<<<<<<< HEAD
-            // Use environment variables if available (for CI or manual signed builds)
-            // Fall back to debug signing if no keystore info is provided (prevents build crash)
-            if (System.getenv("MYAPP_UPLOAD_STORE_FILE") &&
-                System.getenv("MYAPP_UPLOAD_STORE_PASSWORD") &&
-                System.getenv("MYAPP_UPLOAD_KEY_ALIAS") &&
-                System.getenv("MYAPP_UPLOAD_KEY_PASSWORD")) {
-
-                storeFile file(System.getenv("MYAPP_UPLOAD_STORE_FILE"))
-                storePassword System.getenv("MYAPP_UPLOAD_STORE_PASSWORD")
-                keyAlias System.getenv("MYAPP_UPLOAD_KEY_ALIAS")
-                keyPassword System.getenv("MYAPP_UPLOAD_KEY_PASSWORD")
-            } else {
-                // Safe fallback – use debug keystore (build will succeed even without release keys)
-=======
-            // Only load release signing if environment variables exist (CI or local signed build)
-            // This prevents errors when running debug builds
+            // Use environment variables for security (recommended)
             if (System.getenv("KEYSTORE_PATH") &&
                 System.getenv("STORE_PASSWORD") &&
                 System.getenv("KEY_ALIAS") &&
                 System.getenv("KEY_PASSWORD")) {
-
                 storeFile file(System.getenv("KEYSTORE_PATH"))
                 storePassword System.getenv("STORE_PASSWORD")
                 keyAlias System.getenv("KEY_ALIAS")
                 keyPassword System.getenv("KEY_PASSWORD")
             } else {
-                // Fallback: use debug signing if release keys not provided (safe for local testing)
->>>>>>> 42b9df0594b0e577ac541d55534f38c72d4482de
+                // Fallback to debug for local testing
                 storeFile file("debug.keystore")
                 storePassword "android"
                 keyAlias "androiddebugkey"
@@ -90,41 +69,22 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            // Optional: Add debuggable true if needed
         }
 
         release {
-<<<<<<< HEAD
-            // Only use real release signing when keystore info is provided
-            if (System.getenv("MYAPP_UPLOAD_STORE_PASSWORD")) {
-                signingConfig signingConfigs.release
-            } else {
-                signingConfig signingConfigs.debug
-            }
-=======
-            // Use release signing only if real keys are available
-            if (System.getenv("STORE_PASSWORD")) {
-                signingConfig signingConfigs.release
-            } else {
-                signingConfig signingConfigs.debug  // Safe fallback
-            }
+            signingConfig signingConfigs.release
 
+            // Enable shrinking, obfuscation, and optimization
             minifyEnabled enableProguardInReleaseBuilds
             shrinkResources enableProguardInReleaseBuilds
->>>>>>> 42b9df0594b0e577ac541d55534f38c72d4482de
-
-            minifyEnabled enableProguardInReleaseBuilds
-            shrinkResources enableProguardInReleaseBuilds
-
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+
+            // Improves release build performance
+            isCrunchPngs = true
         }
     }
 
-<<<<<<< HEAD
-=======
-    /**
-     * Java & Kotlin Compatibility
-     */
->>>>>>> 42b9df0594b0e577ac541d55534f38c72d4482de
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -134,12 +94,7 @@ android {
         jvmTarget = "17"
     }
 
-<<<<<<< HEAD
-=======
-    /**
-     * Prevent duplicate META-INF crashes (common with many libraries)
-     */
->>>>>>> 42b9df0594b0e577ac541d55534f38c72d4482de
+    // Fix duplicate file issues and license conflicts
     packaging {
         resources {
             excludes += [
@@ -148,48 +103,44 @@ android {
                 "META-INF/AL2.0",
                 "META-INF/LGPL2.1",
                 "META-INF/*.kotlin_module",
-<<<<<<< HEAD
-                "META-INF/DEPENDENCIES"
-=======
                 "META-INF/DEPENDENCIES",
-                "META-INF/NOTICE",
-                "META-INF/LICENSE"
->>>>>>> 42b9df0594b0e577ac541d55534f38c72d4482de
+                "META-INF/*.md",
+                "META-INF/*.txt"
             ]
         }
+    }
+
+    // Required for newer AGP versions (fixes "namespace" related warnings)
+    buildFeatures {
+        buildConfig true
     }
 }
 
 dependencies {
     implementation("com.facebook.react:react-android")
 
-<<<<<<< HEAD
-    // Firebase BoM – latest stable
-=======
-    // Firebase BoM – Updated to latest stable as of Jan 2026
->>>>>>> 42b9df0594b0e577ac541d55534f38c72d4482de
+    // Firebase BOM (Bill of Materials) - always use this to avoid version conflicts
     implementation platform("com.google.firebase:firebase-bom:33.12.0")
     implementation "com.google.firebase:firebase-analytics-ktx"
     implementation "com.google.firebase:firebase-auth-ktx"
     implementation "com.google.firebase:firebase-messaging-ktx"
     implementation "com.google.firebase:firebase-firestore-ktx"
 
-<<<<<<< HEAD
-    // Google Sign-In
     implementation "com.google.android.gms:play-services-auth:21.3.0"
 
-    // JSC for better performance
+    // JSC for better JS performance (optional but good)
     implementation jscFlavor
 
-    // MultiDex
-=======
-    // Google Play Services Auth (latest compatible)
-    implementation "com.google.android.gms:play-services-auth:21.3.0"
-
-    // JSC for better performance (optional but recommended)
-    implementation jscFlavor
-
-    // MultiDex support
->>>>>>> 42b9df0594b0e577ac541d55534f38c72d4482de
     implementation "androidx.multidex:multidex:2.0.1"
+
+    // If you use Google Maps
+    // implementation "com.google.android.gms:play-services-maps:19.0.0"
+    // implementation "com.google.android.gms:play-services-location:21.3.0"
+}
+
+// Disable problematic Reanimated prebuild tasks (common fix for older RN versions on Windows/macOS)
+tasks.whenTaskAdded { task ->
+    if (task.name.contains("reanimated") && task.name.contains("prebuild")) {
+        task.enabled = false
+    }
 }
